@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Category</title>
+    <link rel="stylesheet" type="text/css" th:href="@{webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container text-center">
+	<div th:if="${product.id == null}"><h1>Create New Product</h1></div><br><br>
+	<div th:unless="${product.id == null}"><h1>Edit Product</h1></div><br><br>
+
+	<form th:action="@{/products/save}" th:object="${product}" method="post" style="max-width: 400px; margin: 0 auto;">
+	<input type="hidden" th:field="*{id}" th:value="${product.id}" />
+	<div class="m-3">
+		<div class="form-group row">
+			<label class="col-form-label col-sm-4">Product Name: </label>
+			<div class="col-sm-8">
+				<input type="text" th:field="*{name}" class="form-control" required /><br><br>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-form-label col-sm-4">Product Price: </label>
+			<div class="col-sm-8">
+				<input type="text" step="0.1" th:field="*{price}" class="form-control" required /><br><br>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-form-label col-sm-4">Category: </label>
+			<div class="col-sm-8">
+				<select th:field="*{category}" class="form-control" required>
+					<th:block th:each="cat : ${categoryList}">
+						<option th:text="${cat.name}" th:value="${cat.id}" />
+					</th:block>
+				</select><br><br>
+			</div>
+		</div>
+
+		<th:block th:unless="${product.id == null}" th:each="detail, status : ${product.details}">
+			<input type="hidden" name="detailID" th:value="${detail.id}"/>
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Details #[[${status.count}]]: </label>
+				<div class="col-sm-4">
+					<input type="text" name="detailName" th:value="${detail.name}" class="form-control" required /><br><br>
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="detailValue" th:value="${detail.value}" class="form-control" required /><br><br>
+				</div>
+			</div>
+		</th:block>
+
+		<th:block th:if="${product.id == null}">
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Details #1: </label>
+				<div class="col-sm-4">
+					<input type="text" name="detailName" placeholder="name" class="form-control" required /><br><br>
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="detailValue" placeholder="value" class="form-control" required /><br><br>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Details #2: </label>
+				<div class="col-sm-4">
+					<input type="text" name="detailName" placeholder="name" class="form-control" required /><br><br>
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="detailValue" placeholder="value" class="form-control" required /><br><br>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Details #3: </label>
+				<div class="col-sm-4">
+					<input type="text" name="detailName" placeholder="name" class="form-control" required /><br><br>
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="detailValue" placeholder="value" class="form-control" required /><br><br>
+				</div>
+			</div>
+		</th:block>
+		<div class="text">
+			<button type="submit" class="btn btn-primary">SAVE</button>
+		</div>
+	</div>
+	</form>
+</div>
+</body>
+</html>
